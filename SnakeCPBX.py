@@ -22,13 +22,14 @@ heightCanvas = nbCarreHeight * sizeSnake
 widthMenu = widthCanvas//3
 colorSnake = "#000000"
 colorApple = "red"
-colorCanvas = "#354325"
+colorCanvas = "#568203"
 colorText = "#dfeefc"
 
 class Game():
     def __init__(self,window):
         self.score = IntVar()
         self.score.set(0)  
+        self.perdu = False
 
         self.window = window
         self.plateau = Frame()
@@ -63,8 +64,10 @@ class Game():
         #Collision Mur
         if self.snake.wallCollision():
             self.canvas.create_text(widthCanvas // 2, widthWindow// 2,text="Perdu ! Attention Aux Murs\n Score = " +str(self.score.get()), font=20, fill=colorText,tag="loseText")
+            self.perdu = True
         if self.snake.itselfCollision():
             self.canvas.create_text(widthCanvas // 2, widthWindow// 2,text="Perdu ! Ne Pas Se Mordre\n Score = "+str(self.score.get()), font=20, fill=colorText,tag="loseText")
+            self.perdu = True
         #Collision Apple
         if self.snake.appleCollision(self.apple):
             self.score.set(self.score.get()+1)
@@ -75,13 +78,16 @@ class Game():
         if self.snake.direction !=None:
             self.snake.moveSnake()
             
-        self.window.after(100,self.playGame)
+        if not self.perdu:
+            self.window.after(100,self.playGame)
             
     def restartGame(self):
         self.score.set(0)
         self.snake.resetSnake()
         self.canvas.delete("loseText")
         self.apple.move()
+        self.perdu = False
+        self.playGame()
         
     def arrow(self,evt):
         for x in ["Up","Down","Left","Right"]:

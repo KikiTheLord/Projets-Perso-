@@ -50,7 +50,7 @@ class Player:
     def wallCollision(self):
         #détecte collision avec mur
         snakeHead = self.snake[0]
-        if (snakeHead[0] <0) or (snakeHead[0]>int(self.canvas["width"])) or (snakeHead[1] <0) or (snakeHead[1]>int(self.canvas["height"])):
+        if (snakeHead[0] <0) or (snakeHead[0]+self.size>int(self.canvas["width"])) or (snakeHead[1] <0) or (snakeHead[1]+self.size>int(self.canvas["height"])):
             return True
         return False
         
